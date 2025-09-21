@@ -1,7 +1,11 @@
 #include <iostream>
 #include <vector>
-#include <deque>   // 用到 deque 也要加
+#include <deque> 
 using namespace std;
+//存下标，队列里数值必须保持单调递减。
+//新元素入队时
+//如果它比队尾大，就把队尾踢掉，继续比，直到比不过为止。
+//这样一来，队列里永远只剩“可能成为未来最大值的候选人”。
 class Solution {
 public:
     vector<int> maxSlidingWindow(vector<int>& nums, int k) {
@@ -13,13 +17,13 @@ public:
             if (!dq.empty() && dq.front() <= i - k) {
                 dq.pop_front();
             }
-            // 2. 保证队列单调递减
+            // 保证队列单调递减
             while (!dq.empty() && nums[dq.back()] <= nums[i]) {
                 dq.pop_back();
             }
-            // 3. 入队当前元素下标
+            // 入队当前元素下标
             dq.push_back(i);
-            // 4. 当窗口形成时，记录最大值
+            // 当窗口形成时，记录最大值
             if (i >= k - 1) {
                 ans.push_back(nums[dq.front()]);
             }
